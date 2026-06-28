@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Theme CSS Variables ===== */
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f9fafb;
+  --color-border: #e5e7eb;
+  --color-text: #111827;
+  --color-text-secondary: #6b7280;
+  --color-primary: #6366f1;
+  --color-primary-hover: #4f46e5;
+}
+
+.dark {
+  --color-bg: #030712;
+  --color-surface: #111827;
+  --color-border: #1f2937;
+  --color-text: #f9fafb;
+  --color-text-secondary: #9ca3af;
+  --color-primary: #818cf8;
+  --color-primary-hover: #6366f1;
+}
+
+/* Smooth theme transition */
+* {
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}

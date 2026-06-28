@@ -1,0 +1,12 @@
+.workbuddy/
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+.vite/
+uploads/
+.env.local
+.env.production.local
+*.egg-info/
+documind/
