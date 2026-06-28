@@ -1,12 +1,50 @@
-.workbuddy/
-.venv/
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Node
 node_modules/
 dist/
 .vite/
-uploads/
+
+# Environment
+.env
 .env.local
 .env.production.local
-*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+mysql_data/
+uploads/
+
+# Alembic
+alembic/versions/*.py
+!alembic/versions/.gitkeep
+
+# Project workspace
+.workbuddy/
 documind/
+
+# Planning docs (keep local, not in repo)
+taskflow/PLAN.md
+taskflow/EVENTGO_HANDOFF.md
+taskflow/README.md
+eventgo/README.md
+eventgo/SPEC.md
+eventgo/.gitignore
+taskflow/.gitignore
