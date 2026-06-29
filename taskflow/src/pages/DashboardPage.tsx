@@ -72,9 +72,11 @@ export function DashboardPage() {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
   );
 
+  const [refreshKey, setRefreshKey] = useState(0);
+
   const { data, isLoading, error } = useApi(
     () => eventsApi.list({ page_size: '100', status: 'draft,published,completed' }),
-    [],
+    [refreshKey],
   );
 
   if (!user || user.role === 'user') return <Navigate to="/" replace />;
@@ -126,7 +128,7 @@ export function DashboardPage() {
     setUpdating(true);
     try {
       await eventsApi.update(activeEventData.id, { status: mappedStatus as 'draft' | 'published' | 'completed' });
-      window.location.reload();
+      setRefreshKey((k) => k + 1);
     } catch {
       alert('Status update failed');
       setUpdating(false);

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { notificationsApi } from '../api/client';
 import { useAuthStore } from '../stores/useAuthStore';
@@ -7,10 +8,11 @@ import type { Notification } from '../types';
 
 export function NotificationsPage() {
   const { user } = useAuthStore();
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const { data, isLoading, error } = useApi(
     () => notificationsApi.list({ page_size: '50' }),
-    [],
+    [refreshKey],
     !user,
   );
 
@@ -18,12 +20,12 @@ export function NotificationsPage() {
 
   const handleMarkRead = async (id: number) => {
     await notificationsApi.markRead(id);
-    window.location.reload();
+    setRefreshKey((k) => k + 1);
   };
 
   const handleMarkAll = async () => {
     await notificationsApi.markAllRead();
-    window.location.reload();
+    setRefreshKey((k) => k + 1);
   };
 
   const items = data ?? [];

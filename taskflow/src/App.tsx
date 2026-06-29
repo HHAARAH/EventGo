@@ -13,12 +13,22 @@ import { CreateEventPage, EditEventPage } from './pages/EventFormPages';
 import { ParticipantsPage } from './pages/ParticipantsPage';
 import { DashboardPage } from './pages/DashboardPage';
 
+function LoadingScreen() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-gray-500">Loading...</div>
+    </div>
+  );
+}
+
 export default function App() {
-  const init = useAuthStore((s) => s.init);
+  const { init, isInitialized } = useAuthStore();
 
   useEffect(() => {
     init();
   }, [init]);
+
+  if (!isInitialized) return <LoadingScreen />;
 
   return (
     <BrowserRouter>

@@ -27,8 +27,6 @@ export function EventDetailPage() {
     try {
       await eventsApi.book(Number(id));
       setActionSuccess('Booked successfully!');
-      // Refresh event data
-      window.location.reload();
     } catch (err: any) {
       if (err.status === 409) {
         setActionError('You have already booked this event');

@@ -5,6 +5,7 @@ import { authApi } from '../api/client';
 interface AuthState {
   user: User | null;
   token: string | null;
+  isInitialized: boolean;
   isLoading: boolean;
   error: string | null;
 
@@ -19,6 +20,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   token: null,
+  isInitialized: false,
   isLoading: false,
   error: null,
 
@@ -28,12 +30,14 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (token && userStr) {
       try {
         const user = JSON.parse(userStr);
-        set({ token, user });
+        set({ token, user, isInitialized: true });
+        return;
       } catch {
         localStorage.removeItem('eventgo-token');
         localStorage.removeItem('eventgo-user');
       }
     }
+    set({ isInitialized: true });
   },
 
   login: async (email, password) => {
@@ -67,7 +71,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   logout: () => {
     localStorage.removeItem('eventgo-token');
     localStorage.removeItem('eventgo-user');
-    set({ user: null, token: null, error: null });
+    set({ user: null, token: null, error: null, isInitialized: true });
   },
 
   fetchMe: async () => {

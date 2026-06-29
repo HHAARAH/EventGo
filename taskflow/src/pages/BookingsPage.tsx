@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { bookingsApi } from '../api/client';
 import { useAuthStore } from '../stores/useAuthStore';
@@ -9,10 +9,11 @@ import type { Booking } from '../types';
 export function BookingsPage() {
   const { user } = useAuthStore();
   const [cancelling, setCancelling] = useState<number | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const { data, isLoading, error } = useApi(
     () => bookingsApi.my({ page_size: '50' }),
-    [],
+    [refreshKey],
     !user,
   );
 
@@ -23,9 +24,10 @@ export function BookingsPage() {
     setCancelling(bookingId);
     try {
       await bookingsApi.cancel(bookingId);
-      window.location.reload();
+      setRefreshKey((k) => k + 1);
     } catch {
       alert('Cancellation failed, please try again');
+    } finally {
       setCancelling(null);
     }
   };
