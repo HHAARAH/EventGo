@@ -47,4 +47,5 @@ taskflow/README.md
 eventgo/README.md
 eventgo/SPEC.md
 eventgo/.gitignore
+taskflow/.gitignore
 EVENTGO_PROJECT_REPORT.md
