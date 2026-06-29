@@ -36,14 +36,17 @@ app = FastAPI(
     redoc_url=None,  # Disabled — ReDoc CDN is often blocked in some regions
 )
 
-# CORS — allow frontend dev server and deployed frontend
+# CORS — allow frontend dev servers and deployed domains.
+# Set ALLOWED_ORIGINS env var (comma-separated) for custom domains.
+# Defaults cover localhost for local development.
+import os as _os
+_cors_origins = _os.getenv("ALLOWED_ORIGINS", "").split(",") if _os.getenv("ALLOWED_ORIGINS") else [
+    "http://localhost:5173",
+    "http://localhost:4173",
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:4173",
-        "https://123eventgo.vercel.app",
-    ],
+    allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

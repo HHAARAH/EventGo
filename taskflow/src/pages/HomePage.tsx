@@ -59,7 +59,7 @@ export function HomePage() {
         <div className="text-center py-20">
           <p className="text-red-500 mb-2">Loading failed</p>
           <p className="text-sm text-gray-500">{error}</p>
-          <p className="text-xs text-gray-400 mt-2">Make sure EventGo backend is running (localhost:8000)</p>
+          <p className="text-xs text-gray-400 mt-2">Make sure EventGo backend is running and VITE_API_BASE is set correctly</p>
         </div>
       )}
       {!isLoading && !error && data?.items.length === 0 && (
