@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, Enum as SAEnum, ForeignKey, UniqueConstraint, func
+from sqlalchemy import DateTime, Enum as SAEnum, ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -30,13 +30,12 @@ class Booking(Base):
           status ENUM('confirmed','cancelled') NOT NULL,
           booked_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
           cancelled_at DATETIME NULL,
-          UNIQUE KEY uq_user_event (user_id, event_id, status),
           FOREIGN KEY (user_id) REFERENCES users(id),
           FOREIGN KEY (event_id) REFERENCES events(id)
       );
 
-    The UNIQUE constraint on (user_id, event_id, status) prevents a user
-    from having multiple 'confirmed' bookings for the same event.
+    Duplicate confirmed bookings are prevented at the application level
+    in create_booking() using SELECT ... FOR UPDATE on the event row.
     """
 
     __tablename__ = "bookings"
@@ -52,10 +51,9 @@ class Booking(Base):
     )
     cancelled_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 
-    # Composite unique constraint: one active booking per user per event
-    __table_args__ = (
-        UniqueConstraint("user_id", "event_id", "status", name="uq_user_event_status"),
-    )
+    # No database-level unique constraint — duplicate-confirmed check is handled
+    # at the application level in create_booking() with SELECT ... FOR UPDATE,
+    # which provides concurrency safety without blocking re-book-cancel flows.
 
     # Relationships
     user: Mapped["User"] = relationship(back_populates="bookings", lazy="joined")
