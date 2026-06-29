@@ -25,8 +25,8 @@ export function BookingsPage() {
     try {
       await bookingsApi.cancel(bookingId);
       setRefreshKey((k) => k + 1);
-    } catch {
-      alert('Cancellation failed, please try again');
+    } catch (err: any) {
+      alert(err?.detail?.detail || err?.message || 'Cancellation failed, please try again');
     } finally {
       setCancelling(null);
     }
