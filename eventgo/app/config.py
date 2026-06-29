@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     DB_PASSWORD: str = "eventgo_dev"
     DB_NAME: str = "eventgo"
     DATABASE_URL: str = ""  # Cloud platforms inject this
+    MYSQL_URL: str = ""     # Railway MySQL plugin may use this name instead
 
     # --- JWT ---
     JWT_SECRET: str = "change-me-to-a-random-secret-at-least-32-chars"
@@ -44,15 +45,10 @@ class Settings(BaseSettings):
 
     @property
     def async_database_url(self) -> str:
-        """Build the async connection string.
-
-        When DATABASE_URL is set (cloud deployment), use it directly
-        with the async driver. Otherwise build from individual fields.
-        """
-        if self.DATABASE_URL:
-            # Replace the scheme prefix with async driver
-            # e.g. mysql://... -> mysql+aiomysql://...
-            return self.DATABASE_URL.replace("mysql://", "mysql+aiomysql://", 1)
+        """Build the async connection string."""
+        url = self.MYSQL_URL or self.DATABASE_URL
+        if url:
+            return url.replace("mysql://", "mysql+aiomysql://", 1)
         return (
             f"mysql+aiomysql://{self.DB_USER}:{self.DB_PASSWORD}"
             f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
@@ -61,8 +57,9 @@ class Settings(BaseSettings):
     @property
     def sync_database_url(self) -> str:
         """Build the sync connection string (used by Alembic)."""
-        if self.DATABASE_URL:
-            return self.DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
+        url = self.MYSQL_URL or self.DATABASE_URL
+        if url:
+            return url.replace("mysql://", "mysql+pymysql://", 1)
         return (
             f"mysql+pymysql://{self.DB_USER}:{self.DB_PASSWORD}"
             f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
