@@ -1,0 +1,8 @@
+node_modules
+dist
+.vite
+
+# Keep .env committed (non-secret defaults only)
+# .env.local is for secrets, never commit
+.env.local
+.env.production.local
