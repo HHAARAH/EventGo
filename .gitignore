@@ -40,12 +40,11 @@ alembic/versions/*.py
 .workbuddy/
 documind/
 
-# Planning docs (keep local, not in repo)
+
 taskflow/PLAN.md
 taskflow/EVENTGO_HANDOFF.md
 taskflow/README.md
 eventgo/README.md
 eventgo/SPEC.md
 eventgo/.gitignore
-# Personal study docs (not for GitHub)
 EVENTGO_PROJECT_REPORT.md
