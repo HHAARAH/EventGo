@@ -36,7 +36,7 @@ taskflow/         Frontend SPA (React + TypeScript + Tailwind + Vite)
 - Light / dark / system theme toggle
 - Responsive design (mobile / tablet / desktop)
 
-## Quick Start
+## Quick Test
 
 ```bash
 # 1. Start backend
@@ -47,7 +47,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 # → http://localhost:8000/docs
 
-# 2. Start frontend (new terminal)
+# 2. Start frontend 
 cd taskflow
 npm install
 npm run dev
@@ -58,13 +58,15 @@ npm run dev
 
 ```bash
 # Backend
-cd eventgo && pytest
+cd eventgo
+pytest
 
 # Frontend
-cd taskflow && npm test
+cd taskflow
+npm test
 ```
 
-## Deployment
+## Cloud Deployment
 
 - **Frontend**: Vercel — `taskflow/vercel.json` configured, auto-detect on push
 - **Backend**: Railway — `eventgo/Dockerfile` ready, add MySQL plugin after deploy
